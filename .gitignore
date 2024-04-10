@@ -1,0 +1,7 @@
+**__pycache__**
+*.pyc
+**.cache**
+.eggs/
+*.egg-info/
+*.env
+.git/

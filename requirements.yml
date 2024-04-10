@@ -1,0 +1,15 @@
+channels:
+  - conda-forge
+dependencies:
+  - numpy
+  - pandas
+  - networkx
+  - scipy
+  - scikit-learn
+  - notebook
+  - geopandas
+  - shapely
+  - pyproj
+  - geopy
+  - matplotlib
+  - tqdm
