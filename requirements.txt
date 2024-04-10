@@ -5,6 +5,8 @@ networkx
 scipy
 scikit-learn
 notebook
+xlrd
+openpyxl
 
 # geo libraries
 geopandas
