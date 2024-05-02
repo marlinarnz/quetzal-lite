@@ -19,7 +19,10 @@ def node_clustering(links, nodes, n_clusters=None, prefixe='', group_id=None, **
     else:
         clusters = gpd.GeoDataFrame(nodes).dissolve(group_id)['geometry'].apply(lambda x: x.convex_hull)
         clusters = pd.DataFrame(clusters)
-        cluster_series = nodes[group_id]
+        if isinstance(nodes.index, pd.MultiIndex):
+            cluster_series = nodes.reset_index(level=0, drop=True)[group_id]
+        else:
+            cluster_series = nodes[group_id]
 
     cluster_dict = cluster_series.to_dict()
     centroids = clusters.copy()
@@ -47,7 +50,7 @@ def node_clustering(links, nodes, n_clusters=None, prefixe='', group_id=None, **
         suffixes=['_node', '_centroid']
     )
 
-    parenthood['geometry'] = parenthood.apply(parenthood_geometry, axis=1)
+    parenthood['geometry'] = parenthood['geometry_centroid']#.apply(parenthood_geometry, axis=1)
     centroids.index = prefixe + pd.Series(centroids.index).astype(str)
 
     return links, centroids,  clusters, parenthood
