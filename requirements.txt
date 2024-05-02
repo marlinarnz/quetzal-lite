@@ -1,6 +1,6 @@
 # standard libraries
 numpy
-pandas
+pandas<=2.1
 networkx
 scipy
 scikit-learn
