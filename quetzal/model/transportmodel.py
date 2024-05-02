@@ -1002,7 +1002,7 @@ class TransportModel(parkridemodel.ParkRideModel):
 
     # TODO move all utility features to another object / file
 
-    def analysis_mode_utility(self, how='min', segment=None, segments=None, time_expanded=False):
+    def analysis_mode_utility(self, how='main', segment=None, segments=None, time_expanded=False):
         """Compute utilities per mode per segment based on logit parameters.
         
         Before applying this function :

@@ -57,6 +57,7 @@ def nested_logit_from_paths(
     return_od_tables=True,
     symmetric=False,
 ):
+    assert len(paths) > 0, "There are no paths to perform mode choice, check the utility computation"
     paths['index'] = paths.index
     paths.set_index(od_cols[0], drop=False, inplace=True)
     paths.index.name = 'index'
