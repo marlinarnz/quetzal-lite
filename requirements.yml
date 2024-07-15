@@ -10,9 +10,11 @@ dependencies:
   - notebook
   - xlrd
   - openpyxl
+  - xlsxwriter
   - geopandas
   - shapely
   - pyproj
   - geopy
+  - osmnx
   - matplotlib
   - tqdm
