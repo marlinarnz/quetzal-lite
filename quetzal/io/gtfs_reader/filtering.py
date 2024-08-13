@@ -260,10 +260,9 @@ def restrict_to_dates(feed, dates, drop_unused=True):
     active_services = set()
     for date in dates:
         services = get_active_services(feed, [date])
-        for s in services:
-            new_calendar_dates.append(pd.DataFrame(
-                {'service_id': s, 'date': date, 'exception_type': 1})
-                )
+        new_calendar_dates.append(pd.DataFrame(
+            {'service_id': services, 'date': date, 'exception_type': 1})
+            )
         active_services = active_services.union(set(services))
     new_calendar_dates = pd.concat(new_calendar_dates)
 
