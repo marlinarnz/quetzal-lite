@@ -82,14 +82,14 @@ class RoadPathFinder:
         
         df['sparse_a'] = df['a'].apply(lambda x:index.get(x))
         df['sparse_b'] = df['b'].apply(lambda x:index.get(x))
-        volumes_sparse_keys = list(zip(df['sparse_a'],df['sparse_b']))
+        #volumes_sparse_keys = list(zip(df['sparse_a'],df['sparse_b']))
    
 
         odv = v[['o','d',volume_column]].values
         # BUILD PATHS FROM PREDECESSORS AND ASSIGN VOLUMES
         # then convert index back to each links indexes
         #nb.set_num_threads(num_cores)
-        ab_volumes = assign_volume(odv,predecessors,volumes_sparse_keys,reversed_index)
+        ab_volumes = assign_volume(odv,predecessors,reversed_index)
         
      
         
@@ -114,7 +114,7 @@ class RoadPathFinder:
             _, predecessors = parallel_dijkstra(sparse, directed=True, indices=zones, return_predecessors=True, num_core=num_cores, keep_running=True)
 
             # BUILD PATHS FROM PREDECESSORS AND ASSIGN VOLUMES
-            ab_volumes = assign_volume(odv,predecessors,volumes_sparse_keys,reversed_index)
+            ab_volumes = assign_volume(odv,predecessors,reversed_index)
         
             df['auxiliary_flow'] = pd.Series(ab_volumes)
             df['auxiliary_flow'].fillna(0, inplace=True)
