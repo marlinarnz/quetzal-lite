@@ -1,6 +1,6 @@
 # standard libraries
 numpy
-pandas<=2.1
+pandas
 networkx
 scipy
 scikit-learn
@@ -16,10 +16,11 @@ pyproj
 geopy
 
 # in case you want to process GTFS feeds with quetzal functions
-#gtfs_kit
+gtfs_kit
+geojson
 #folium
 
-# in case you want to re-create the road network from OSM data
+# in case you want to create a road network from OSM data
 osmnx
 
 # visualization libraries
