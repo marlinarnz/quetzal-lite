@@ -54,6 +54,7 @@ def geodataframe_place_holder(geom_type, prefix=None):
 def rename_duplicate_stops(g, sep='_circular-fix_'):
     stop_set = {}
     u_ab = []
+    count = 0
     for a, b in g[['a', 'b']].values:
         # a
         ab = [a, b]
