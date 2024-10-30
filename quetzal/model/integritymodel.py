@@ -80,12 +80,13 @@ def rename_duplicate_stops(g, sep='_circular-fix_'):
 def fix_circular_lines(links, nodes, on='trip_id', sep='_circular-fix_'):
     links = links.groupby(on).apply(rename_duplicate_stops, sep='_circular-fix_')
     # add new nodes
-    c_nodes = links[links['a'].apply(lambda x: sep in x )]['a']
-    c_nodes = c_nodes.append(links[links['b'].apply(lambda x: sep in x )]['b']).drop_duplicates()
+    a_nodes = links[links['a'].apply(lambda x: sep in x )]['a']
+    b_nodes = links[links['b'].apply(lambda x: sep in x )]['b']
+    c_nodes = pd.concat([a_nodes, b_nodes]).drop_duplicates()
 
     c_nodes_geom = nodes.loc[c_nodes.apply(lambda x: x.split(sep)[0]).values]
     c_nodes_geom.index = c_nodes.values
-    nodes = nodes.append(c_nodes_geom)
+    nodes = pd.concat([nodes, c_nodes_geom])
 
     return links, nodes
 
