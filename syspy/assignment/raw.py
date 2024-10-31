@@ -1,9 +1,6 @@
 __author__ = 'qchasserieau'
-import collections
 import itertools
-
 import pandas as pd
-from tqdm import tqdm
 
 
 def ma_fonction_a_tester(a, b):
@@ -44,8 +41,6 @@ def assign(volume_array, paths, checkpoints=None, checkpoints_how='all'):
     nested_volumes = nested_list(volume_array, paths)
     volumes = list(itertools.chain.from_iterable(nested_volumes))
     try:
-        # volumes_array is an ndarray
-        assert isinstance(volumes[0], collections.Iterable)
         sparse = pd.concat(
             (pd.DataFrame({'link': column_indices}),
              pd.DataFrame(volumes)),
