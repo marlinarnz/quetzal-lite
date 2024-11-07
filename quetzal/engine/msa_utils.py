@@ -13,10 +13,10 @@ def default_bpr(mat,der=False):
     for i in range(mat.shape[0]):
         alpha = mat[i,0]
         beta = mat[i,1]
-        V = mat[i,3]
+        V = mat[i,3]#flow
         t0 = mat[i,4]
         penalty = mat[i,5]
-        Q = mat[i,6]
+        Q = mat[i,6]#capacity
         if der == False:
             res =  t0 * (1 + alpha*np.power(V/Q, beta))
             jam_time.append(res + penalty)     
@@ -77,7 +77,8 @@ def jam_time(links, vdf={'default_bpr': default_bpr},flow='flow',der=False,time_
     assert len(missing_vdf) == 0, 'you should provide methods for the following vdf keys' + str(missing_vdf)
     for key in keys:
         if type(vdf[key]).__name__=='function': #normal python function.
-            links.loc[links['vdf']==key,'result'] = vdf[key](links.loc[links['vdf']==key], flow, der) 
+            #--#links.loc[links['vdf']==key,'result'] = vdf[key](links.loc[links['vdf']==key], flow, der) 
+            links.loc[links['vdf']==key,'result'] = vdf[key](links.loc[links['vdf']==key,['alpha','beta','limit',flow,time_col,'penalty','capacity']].values, der) 
         else: # numba function.
             links.loc[links['vdf']==key,'result'] = vdf[key](links.loc[links['vdf']==key,['alpha','beta','limit',flow,time_col,'penalty','capacity']].values, der) 
         

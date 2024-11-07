@@ -4,10 +4,10 @@ from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
 #from numba import jit
 #import numba as nb
-#import ray
+import ray
 
 #Simple wrapper to call dijkstra with ray (parallel computing)
-#@ray.remote
+@ray.remote
 def ray_dijkstra(csgraph,indices,**kwargs):
     return dijkstra(csgraph=csgraph, 
                     indices=indices, 
@@ -19,8 +19,7 @@ def parallel_dijkstra(csgraph,indices=None,return_predecessors=True, num_core=1,
     num_core = 1 : number of threads.
     keep_running = False : if you want to keep the subprocesses alive (mmutiple dijktra in a loop for example)
     '''
-    return  dijkstra(csgraph=csgraph, indices=indices, return_predecessors=return_predecessors,**kwargs)
-    '''if num_core == 1:
+    if num_core == 1:
         return  dijkstra(csgraph=csgraph, indices=indices, return_predecessors=return_predecessors,**kwargs)
 
     if ray.is_initialized() == False:
@@ -45,7 +44,7 @@ def parallel_dijkstra(csgraph,indices=None,return_predecessors=True, num_core=1,
         return dist_matrix, predecessors
     else:
         dist_matrix = np.concatenate(result,axis=0)
-        return dist_matrix'''
+        return dist_matrix
 
 
 def simple_routing(origin, destination, links, weight_col='time', dijkstra_limit=np.inf, return_predecessors=False):
