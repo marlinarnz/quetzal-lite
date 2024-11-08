@@ -19,5 +19,7 @@ dependencies:
   - osmnx
   - matplotlib
   - tqdm
+  - numba
   - pip:
     - gtfs_kit
+    - ray

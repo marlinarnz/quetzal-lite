@@ -1,11 +1,12 @@
 #from numba import jit
 import numpy as np
 from quetzal.engine.pathfinder_utils import get_node_path, get_path, sparse_matrix, parallel_dijkstra
-#import numba as nb
+import numba as nb
+from numba import jit
 
 
 
-#@jit(nopython=True)
+@jit(nopython=True)
 def default_bpr(mat,der=False):
     #columns in mat : 'alpha','beta','limit','flow','time','penalty','capacity'
     #der return the first derivative (for the find beta...)
@@ -25,7 +26,7 @@ def default_bpr(mat,der=False):
             jam_time.append(der)
     return jam_time
 
-#@jit(nopython=True)
+@jit(nopython=True)
 def limited_bpr(mat,der=False):
     #columns in mat : 'alpha','beta','limit','flow','time','penalty','capacity'
     #der return the first derivative (for the find beta...)
@@ -53,7 +54,7 @@ def limited_bpr(mat,der=False):
                 jam_time.append(der)
     return jam_time
 
-#@jit(nopython=True)
+@jit(nopython=True)
 def free_flow(mat,der=False):
     #columns in mat : 'alpha','beta','limit','flow','time','penalty','capacity'
     #der return the derivative (for the find beta...)
@@ -139,7 +140,7 @@ def get_zone_index(df,v,index):
 
 
 
-def assign_volume(odv,predecessors,reversed_index):
+'''def assign_volume(odv,predecessors,reversed_index):
     volumes={}
     for origin, destination, volume in odv: 
         path = get_node_path(predecessors, origin, destination)
@@ -155,12 +156,12 @@ def assign_volume(odv,predecessors,reversed_index):
         (reversed_index[k[0]], reversed_index[k[1]]) : v 
         for k, v in volumes.items()
     }
-    return ab_volumes
+    return ab_volumes'''
 
 
-#@jit(nopython=True,locals={'predecessors':nb.int32[:,::1]},parallel=True) #parallel=True
+@jit(nopython=True,locals={'predecessors':nb.int32[:,::1]},parallel=True) #parallel=True
 def fast_assign_volume(odv,predecessors,volumes):
-    '''# this function use parallelization (or not).nb.set_num_threads(num_cores)
+    # this function use parallelization (or not).nb.set_num_threads(num_cores)
     # volumes is a numba dict with all the key initialized
     for i in nb.prange(len(odv)): #nb.prange(len(odv)):
         origin = odv[i,0]
@@ -170,10 +171,10 @@ def fast_assign_volume(odv,predecessors,volumes):
         path = list(zip(path[:-1], path[1:]))
         for key in path:
             volumes[key]+=v
-    return volumes'''
-    return assign_volume(odv, predecessors, volumes)
+    return volumes
+    #return assign_volume(odv, predecessors, volumes)
 
-'''def assign_volume(odv,predecessors,volumes_sparse_keys,reversed_index):
+def assign_volume(odv,predecessors,volumes_sparse_keys,reversed_index):
         # create a numba dict.
     numba_volumes = nb.typed.Dict.empty(
         key_type=nb.types.UniTuple(nb.types.int64, 2), 
@@ -189,7 +190,7 @@ def fast_assign_volume(odv,predecessors,volumes):
         for k, v in volumes.items()
         }
     return ab_volumes
-'''
+
 
 
 def get_car_los(v,df,index,reversed_index,zones,ntleg_penalty,num_cores=1):
