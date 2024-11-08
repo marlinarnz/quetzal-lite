@@ -77,11 +77,11 @@ def jam_time(links, vdf={'default_bpr': default_bpr},flow='flow',der=False,time_
     #todo : utiliser lancienne methode si les mVDF sont en python et non en numba.
     assert len(missing_vdf) == 0, 'you should provide methods for the following vdf keys' + str(missing_vdf)
     for key in keys:
+        cols = ['alpha','beta','limit',flow,time_col,'penalty','capacity']
         if type(vdf[key]).__name__=='function': #normal python function.
-            #--#links.loc[links['vdf']==key,'result'] = vdf[key](links.loc[links['vdf']==key], flow, der) 
-            links.loc[links['vdf']==key,'result'] = vdf[key](links.loc[links['vdf']==key,['alpha','beta','limit',flow,time_col,'penalty','capacity']].values, der) 
+            links.loc[links['vdf']==key,'result'] = vdf[key](links.loc[links['vdf']==key, cols].values, der) 
         else: # numba function.
-            links.loc[links['vdf']==key,'result'] = vdf[key](links.loc[links['vdf']==key,['alpha','beta','limit',flow,time_col,'penalty','capacity']].values, der) 
+            links.loc[links['vdf']==key,'result'] = vdf[key](links.loc[links['vdf']==key, cols].values, der) 
         
     return links['result']
 
