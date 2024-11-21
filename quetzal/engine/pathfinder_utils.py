@@ -19,6 +19,7 @@ def parallel_dijkstra(csgraph,indices=None,return_predecessors=True, num_core=1,
     num_core = 1 : number of threads.
     keep_running = False : if you want to keep the subprocesses alive (mmutiple dijktra in a loop for example)
     '''
+    
     if num_core == 1:
         return  dijkstra(csgraph=csgraph, indices=indices, return_predecessors=return_predecessors,**kwargs)
 

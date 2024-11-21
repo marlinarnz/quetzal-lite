@@ -159,11 +159,11 @@ def get_zone_index(df,v,index):
     return ab_volumes'''
 
 
-@jit(nopython=True,locals={'predecessors':nb.int32[:,::1]},parallel=True) #parallel=True
+@jit(nopython=True,locals={'predecessors':nb.int32[:,::1]},parallel=False) #parallel=True
 def fast_assign_volume(odv,predecessors,volumes):
     # this function use parallelization (or not).nb.set_num_threads(num_cores)
     # volumes is a numba dict with all the key initialized
-    for i in nb.prange(len(odv)): #nb.prange(len(odv)):
+    for i in range(len(odv)): #nb.prange(len(odv)):
         origin = odv[i,0]
         destination = odv[i,1]
         v=odv[i,2]
@@ -220,17 +220,27 @@ def get_car_los(v,df,index,reversed_index,zones,ntleg_penalty,num_cores=1):
     
 def find_beta(df,phi_1):
     # The Stiff is Moving - Conjugate Direction Frank-Wolfe Methods with Applications to Traffic Assignment from Mitradjieva maria
+    # doi.org/10.1287/trsc.1120.0409
+    # Deriviation of Formulas in Appendix
 
     b = [0,0,0]
     dk_1 = df['s_k-1'] - df['flow']
     dk_2 = phi_1 * df['s_k-1'] + (1 - phi_1) * df['s_k-2'] - df['flow']
     dk = df['auxiliary_flow'] - df['flow']
     # put a try here except mu=0 if we have a division by 0...
-    mu = - sum( dk_2 * df['derivative'] * dk) / sum( dk_2 * df['derivative'] * ( df['s_k-2'] - df['s_k-1']  ) )
-    mu = max(0,mu) # beta_k >=0
+    try:
+        mu = - sum( dk_2 * df['derivative'] * dk) / sum( dk_2 * df['derivative'] * ( df['s_k-2'] - df['s_k-1']  ) )
+        mu = max(0,mu) # beta_k >=0
+    except:
+        mu = 0
     # same try here.
-    nu = - sum( dk_1 * df['derivative'] * dk ) / sum( dk_1 * df['derivative'] * dk_1 )  + ( mu * phi_1 / ( 1 - phi_1 ) )
-    nu = max(0,nu)
+    try:
+        nu = - sum( dk_1 * df['derivative'] * dk ) / sum( dk_1 * df['derivative'] * dk_1 )  + ( mu * phi_1 / ( 1 - phi_1 ) )
+        nu = max(0,nu)
+    except:
+        nu= 0
+
+
     b[0] = 1 / ( 1+ mu + nu )
     b[1] = nu * b[0]
     b[2] = mu * b[0]

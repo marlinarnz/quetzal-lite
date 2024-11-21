@@ -231,7 +231,6 @@ class TransportModel(parkridemodel.ParkRideModel):
         if path_analysis:
             self.analysis_car_los()
 
-
     @track_args
     def step_pr_pathfinder(
         self,

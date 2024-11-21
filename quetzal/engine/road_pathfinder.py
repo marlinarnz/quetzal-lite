@@ -135,8 +135,10 @@ class RoadPathFinder:
                 phi = 1 / (i + 2)
             else:
                 phi = find_phi(df, vdf, 0, 0.8, 10,time_col=self.time_col)
+
+
             #
-           
+
             #  modelling transport eq 11.11. SUM currentFlow x currentCost - SUM AONFlow x currentCost / SUM currentFlow x currentCost
             rel_gap.append(100*(np.sum(df['flow']*df['jam_time']) - np.sum(df['auxiliary_flow']*df['jam_time']))/np.sum(df['flow']*df['jam_time']))
             if log:
