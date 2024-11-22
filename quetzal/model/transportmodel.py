@@ -507,7 +507,7 @@ class TransportModel(parkridemodel.ParkRideModel):
         shared_cols = list(set(self.volumes.columns).intersection(set(los.columns)))
         on = [col for col in shared_cols if col in ['origin', 'destination', 'wished_departure_time']]
 
-        left = los[on + probabilities]
+        left = los.loc[:,on + probabilities]
         left['index'] = left.index
         df = pd.merge(left, self.volumes, on=on).set_index('index')
         df = df.reindex(los.index)
@@ -1171,9 +1171,9 @@ class TransportModel(parkridemodel.ParkRideModel):
         for segment in self.segments:
             keep_columns = od_cols + ['route_type', (segment, 'utility')]
             if time_expanded:
-                paths = self.te_los[keep_columns]
+                paths = self.te_los.loc[:,keep_columns]
             else:
-                paths = self.los[keep_columns]
+                paths = self.los.loc[:,keep_columns]
 
             paths.rename(columns={(segment, 'utility'): 'utility'}, inplace=True)
             paths = paths.dropna(subset=['utility'])

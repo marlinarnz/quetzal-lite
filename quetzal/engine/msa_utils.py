@@ -194,7 +194,7 @@ def assign_volume(odv,predecessors,volumes_sparse_keys,reversed_index):
 
 
 def get_car_los(v,df,index,reversed_index,zones,ntleg_penalty,num_cores=1):
-    car_los = v[['origin','destination','o','d']]
+    car_los = v.loc[:,['origin','destination','o','d']]
     edges = df['jam_time'].reset_index().values # build the edges again, useless
     sparse, _ = sparse_matrix(edges, index=index)
     dist_matrix, predecessors = parallel_dijkstra(sparse, directed=True, indices=zones, return_predecessors=True, num_core=num_cores, keep_running=False)
