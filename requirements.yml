@@ -1,7 +1,7 @@
 channels:
   - conda-forge
 dependencies:
-  - python=3.10
+  - python=3.12
   - numpy
   - pandas
   - networkx
@@ -20,6 +20,6 @@ dependencies:
   - matplotlib
   - tqdm
   - numba
+  - ray-default
   - pip:
     - gtfs_kit
-    - ray

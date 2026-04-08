@@ -78,7 +78,7 @@ def rename_duplicate_stops(g, sep='_circular-fix_'):
     return g
 
 def fix_circular_lines(links, nodes, on='trip_id', sep='_circular-fix_'):
-    links = links.groupby(on).apply(rename_duplicate_stops, sep='_circular-fix_'
+    links = links.groupby(on).apply(rename_duplicate_stops, sep=sep
                                     ).reset_index(level=on, drop=True)
     # add new nodes
     a_nodes = links[links['a'].apply(lambda x: sep in x )]['a']

@@ -38,7 +38,7 @@ def link_from_stop_times(
     links = []
 
     max_sequence = stop_times[in_sequence].max()
-    assert max_sequence
+    assert max_sequence >= 1
     max_shortcut = max_shortcut if max_shortcut and max_shortcut < max_sequence else max_sequence
     for i in range(int(max_shortcut)):
         origins['next'] = origins[in_sequence] + 1 + i
