@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 from quetzal.engine.pathfinder_utils import sparse_matrix, build_index, parallel_dijkstra
 from quetzal.engine.msa_utils import get_zone_index, assign_volume, default_bpr, limited_bpr, free_flow, jam_time, find_phi, get_car_los, find_beta
-import numba as nb
-import ray
+#import numba as nb
+#import ray
 
 
 
@@ -89,7 +89,7 @@ class RoadPathFinder:
         odv = v[['o','d',volume_column]].values
         # BUILD PATHS FROM PREDECESSORS AND ASSIGN VOLUMES
         # then convert index back to each links indexes
-        nb.set_num_threads(num_cores)
+        #nb.set_num_threads(num_cores)
         ab_volumes = assign_volume(odv,predecessors,volumes_sparse_keys, reversed_index)
 
         df['auxiliary_flow'] = pd.Series(ab_volumes)
@@ -165,9 +165,9 @@ class RoadPathFinder:
 
         self.car_los = get_car_los(v,df,index,reversed_index,zones,self.ntleg_penalty,num_cores)
         self.relgap  = rel_gap
-        if ray.is_initialized():
-            print('shutdown ray')
-            ray.shutdown()
+        #if ray.is_initialized():
+        #    print('shutdown ray')
+        #    ray.shutdown()
 
 
 
