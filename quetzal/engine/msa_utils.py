@@ -1,12 +1,11 @@
-#from numba import jit
 import numpy as np
 from quetzal.engine.pathfinder_utils import get_node_path, get_path, sparse_matrix, parallel_dijkstra
-import numba as nb
-from numba import jit
+#import numba as nb
+#from numba import jit
 
 
 
-@jit(nopython=True)
+#@jit(nopython=True)
 def default_bpr(mat,der=False):
     #columns in mat : 'alpha','beta','limit','flow','time','penalty','capacity'
     #der return the first derivative (for the find beta...)
@@ -26,7 +25,7 @@ def default_bpr(mat,der=False):
             jam_time.append(der)
     return jam_time
 
-@jit(nopython=True)
+#@jit(nopython=True)
 def limited_bpr(mat,der=False):
     #columns in mat : 'alpha','beta','limit','flow','time','penalty','capacity'
     #der return the first derivative (for the find beta...)
@@ -54,7 +53,7 @@ def limited_bpr(mat,der=False):
                 jam_time.append(der)
     return jam_time
 
-@jit(nopython=True)
+#@jit(nopython=True)
 def free_flow(mat,der=False):
     #columns in mat : 'alpha','beta','limit','flow','time','penalty','capacity'
     #der return the derivative (for the find beta...)
@@ -159,7 +158,7 @@ def get_zone_index(df,v,index):
     return ab_volumes'''
 
 
-@jit(nopython=True,locals={'predecessors':nb.int32[:,::1]},parallel=False) #parallel=True
+#@jit(nopython=True,locals={'predecessors':nb.int32[:,::1]},parallel=False) #parallel=True
 def fast_assign_volume(odv,predecessors,volumes):
     # this function use parallelization (or not).nb.set_num_threads(num_cores)
     # volumes is a numba dict with all the key initialized
@@ -175,11 +174,12 @@ def fast_assign_volume(odv,predecessors,volumes):
     #return assign_volume(odv, predecessors, volumes)
 
 def assign_volume(odv,predecessors,volumes_sparse_keys,reversed_index):
-        # create a numba dict.
-    numba_volumes = nb.typed.Dict.empty(
-        key_type=nb.types.UniTuple(nb.types.int64, 2), 
-        value_type=nb.types.float64
-        )
+    # create a numba dict.
+    #numba_volumes = nb.typed.Dict.empty(
+    #    key_type=nb.types.UniTuple(nb.types.int64, 2), 
+    #    value_type=nb.types.float64
+    #    )
+    numba_volumes = {}
     for ind in volumes_sparse_keys:
         numba_volumes[ind]=0
     #assign volumes from each od
