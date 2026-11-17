@@ -18,7 +18,7 @@ class RoadPathFinder:
         try:
             self.volumes = model.volumes.copy()
         except AttributeError:
-            print('self.volumes does not exist. od generated with self.zones')
+            #print('self.volumes does not exist. od generated with self.zones')
             od_set = []
             for o in model.zones.index.values:
                 for d in model.zones.index.values:

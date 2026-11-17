@@ -84,7 +84,7 @@ class Feed(gk.feed.Feed):  # Overwrite Feed class
 
         # drops routes without trips
         route_set = list(self.trips.route_id.unique())
-        self.routes = self.routes.set_index('route_id').loc[route_set].reset_index()
+        self.routes = self.routes.loc[self.routes['route_id'].isin(route_set)]
 
         # drops shapes without trips
         if self.shapes is not None:

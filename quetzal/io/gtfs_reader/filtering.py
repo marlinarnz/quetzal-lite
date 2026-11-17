@@ -232,21 +232,21 @@ def get_active_services(feed, dates, drop_unused=True):
                 set(
                     feed.calendar[
                         (feed.calendar[wd] == 1)
-                        & (feed.calendar['start_date'] <= date)
-                        & (feed.calendar['end_date'] >= date)
+                        & (feed.calendar['start_date'].astype(str) <= date)
+                        & (feed.calendar['end_date'].astype(str) >= date)
                     ]['service_id'].unique()
                 )
             )
     if feed.calendar_dates is not None and not feed.calendar_dates.empty:
         to_add = set(
             feed.calendar_dates[
-                (feed.calendar_dates['date'].isin(dates))
+                (feed.calendar_dates['date'].astype(str).isin(dates))
                 & (feed.calendar_dates['exception_type'] == 1)
             ]['service_id']
         )
         to_remove = set(
             feed.calendar_dates[
-                (feed.calendar_dates['date'].isin(dates))
+                (feed.calendar_dates['date'].astype(str).isin(dates))
                 & (feed.calendar_dates['exception_type'] == 2)
             ]['service_id']
         )
